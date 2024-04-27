@@ -3,6 +3,7 @@ import Discord, { IntentsBitField, type Interaction, Routes, SlashCommandBuilder
 import { config } from 'dotenv'
 import { REST } from '@discordjs/rest'
 import { joinVoiceChannel } from '@discordjs/voice'
+import { type IJoinVoiceChannelOptions } from './bot/interfaces/IVoiceChannel.js'
 
 // let client: Discord.Client
 
@@ -29,10 +30,18 @@ client.on('interactionCreate', async (interaction: Interaction) => {
       try {
         const voiceChannel = interaction.options.getChannel('channel')
 
-        joinVoiceChannel({
-          channelId: voiceChannel?.id,
-          guildId: interaction.guildId,
+        if (voiceChannel === null || interaction.guild === null) throw new Error()
+
+        const JoinVoiceChannelOptions: IJoinVoiceChannelOptions = {
+          channelId: voiceChannel.id,
+          guildId: interaction.guildId ?? '123',
           adapterCreator: interaction.guild.voiceAdapterCreator
+        }
+
+        joinVoiceChannel({
+          channelId: JoinVoiceChannelOptions.channelId,
+          guildId: JoinVoiceChannelOptions.guildId,
+          adapterCreator: JoinVoiceChannelOptions.adapterCreator
         })
         await interaction.reply(`Se unio al canal <#${voiceChannel?.id}>`)
       } catch (error) {
