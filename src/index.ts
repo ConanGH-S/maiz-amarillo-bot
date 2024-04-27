@@ -1,16 +1,8 @@
-// import { Bot } from './server/server.js'
 import Discord, { IntentsBitField, type Interaction, Routes, SlashCommandBuilder, ChannelType } from 'discord.js'
 import { config } from 'dotenv'
 import { REST } from '@discordjs/rest'
 import { joinVoiceChannel } from '@discordjs/voice'
 import { type IJoinVoiceChannelOptions } from './bot/interfaces/IVoiceChannel.js'
-
-// let client: Discord.Client
-
-// (async () => {
-//   const serverBot = new Bot()
-//   serverBot.init()
-// })().catch(console.error)
 
 config()
 
