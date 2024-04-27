@@ -1,5 +1,9 @@
-import { Init } from './server/server.js';
+import { Bot } from './server/server.js'
 
 (() => {
-  new Init().run()
+  const serverBot = new Bot()
+  serverBot.init()
+    .catch((err) => {
+      console.error(err)
+    })
 })()
