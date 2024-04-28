@@ -1,6 +1,7 @@
 import { type Client, SlashCommandBuilder, type RESTPostAPIChatInputApplicationCommandsJSONBody, type Interaction } from 'discord.js'
 import { type IDisconnect } from '../interfaces/ICommands.js'
 import { getVoiceConnection } from '@discordjs/voice'
+import { EmbedBuilder } from 'discord.js'
 
 export class Disconnect implements IDisconnect {
   constructor (private readonly _client: Client) {
@@ -11,7 +12,13 @@ export class Disconnect implements IDisconnect {
             if (interaction.guildId === null) throw new Error()
             const connection = getVoiceConnection(interaction.guildId)
             connection?.destroy()
-            await interaction.reply('Se desconecto del canal')
+            const exitEmbed = new EmbedBuilder()
+              .setColor('#E00B00')
+              .setDescription('Se ha desconectado')
+            await interaction.reply({
+              embeds:
+              [exitEmbed]
+            })
           } catch (error) {
             await interaction.reply('Ha ocurrido un error')
             console.error(error)
