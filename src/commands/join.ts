@@ -2,6 +2,7 @@ import { ChannelType, type Client, SlashCommandBuilder, type Interaction, type R
 import { type IJoinVoiceChannelOptions } from '../interfaces/IVoiceChannel.js'
 import { joinVoiceChannel } from '@discordjs/voice'
 import { type IJoin } from '../interfaces/ICommands.js'
+import { EmbedBuilder } from 'discord.js'
 
 export class Join implements IJoin {
   constructor (private readonly _client: Client) {
@@ -24,7 +25,13 @@ export class Join implements IJoin {
               guildId: JoinVoiceChannelOptions.guildId,
               adapterCreator: JoinVoiceChannelOptions.adapterCreator
             })
-            await interaction.reply(`Se unio al canal <#${voiceChannel?.id}>`)
+            const exitEmbed = new EmbedBuilder()
+              .setColor('#2C53DE')
+              .setDescription(`Se ha unido al canal <#${voiceChannel?.id}>`)
+            await interaction.reply({
+              embeds:
+              [exitEmbed]
+            })
           } catch (error) {
             await interaction.reply('Ha ocurrido un error')
             console.error(error)
