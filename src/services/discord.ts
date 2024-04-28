@@ -4,7 +4,8 @@ import { type IEnv } from '../interfaces/IEnv.js'
 import { REST } from '@discordjs/rest'
 import { type IDiscord } from '../interfaces/IDiscord.js'
 import { Join } from '../commands/join.js'
-import { type IJoin } from '../interfaces/ICommands.js'
+import { type IDisconnect, type IJoin } from '../interfaces/ICommands.js'
+import { Disconnect } from '../commands/disconnect.js'
 
 export class Discord implements IDiscord {
   private readonly _client: Client
@@ -12,6 +13,8 @@ export class Discord implements IDiscord {
 
   private readonly _env: IEnv
   private readonly _join: IJoin
+
+  private readonly _disconnect: IDisconnect
 
   private readonly _token: string
   private readonly _clientId: string
@@ -29,6 +32,7 @@ export class Discord implements IDiscord {
     this._clientId = this._env.getClientId()
     this._rest = new REST({ version: '10' }).setToken(this._token)
     this._join = new Join(this._client)
+    this._disconnect = new Disconnect(this._client)
   }
 
   public async init (): Promise<void> {
@@ -38,7 +42,8 @@ export class Discord implements IDiscord {
      */
     await this._rest.put(Routes.applicationCommands(this._clientId), {
       body: [
-        this._join.createCommand()
+        this._join.createCommand(),
+        this._disconnect.createCommand()
       ]
     })
     console.log('Discord commands ready!')
